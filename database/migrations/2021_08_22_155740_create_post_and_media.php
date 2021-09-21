@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostImages extends Migration
+class CreatePostAndMedia extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreatePostImages extends Migration
      */
     public function up()
     {
-        Schema::create('post_images', function (Blueprint $table) {
+        Schema::create('post_and_media', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("post_id")->index();
-            $table->string("src", 500);
-            $table->timestamp("created_at")->useCurrent();
-            $table->timestamp("updated_at")->useCurrent()->useCurrentOnUpdate();
+            $table->unsignedBigInteger("media_id")->index();
+            $table->timestamps();
         });
     }
 
@@ -29,6 +28,6 @@ class CreatePostImages extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_images');
+        Schema::dropIfExists('post_and_media');
     }
 }

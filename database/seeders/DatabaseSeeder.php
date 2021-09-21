@@ -33,6 +33,16 @@ class DatabaseSeeder extends Seeder
             ExampleSeeder::class,
             BREADSeeder::class,
             EmailSeeder::class,
+
+            //sample datas for manage news
+            CategorySeeder::class,
+            PostSeeder::class,
+            CommentSeeder::class,
+            SaveOrSharePostListSeeder::class,
+            UserReceiveNotificationSeeder::class,
+            NotificationSeeder::class,
+            PostEvaluateSeeder::class,
+            PostAndMediaSeeder::class
         ]);
     }
 }

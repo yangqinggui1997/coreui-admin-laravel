@@ -71,14 +71,19 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-upload": "^29.1.0",
     "@coreui/chartjs": "^2.0.0",
     "@coreui/coreui": "^3.2.0",
     "@coreui/icons": "^1.0.1",
     "@coreui/utils": "^1.2.4",
     "@popperjs/core": "^2.4.0",
     "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "bootstrap-multiselect": "^1.1.0",
+    "bootstrap-treeview": "^1.2.0",
     "chart.js": "^2.9.3",
     "cropperjs": "^1.5.7",
+    "jquery": "^3.6.0",
     "laravel-mix": "^5.0.4",
     "perfect-scrollbar": "1.5.0"
   },

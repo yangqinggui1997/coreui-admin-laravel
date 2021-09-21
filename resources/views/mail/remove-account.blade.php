@@ -1,0 +1,1 @@
+<p style="background-color: #fbfb25">Your account was removed by admin master at {{ $deleteTime }}</p>

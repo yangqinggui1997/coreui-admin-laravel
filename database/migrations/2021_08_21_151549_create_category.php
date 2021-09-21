@@ -15,11 +15,12 @@ class CreateCategory extends Migration
     {
         Schema::create('category', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("parent_id")->index();
+            $table->unsignedBigInteger("parent_id")->default(0)->index();
             $table->string("name");
             $table->string("seo_name")->nullable();
             $table->boolean("display")->default(1);
             $table->string("thumbnail");
+            $table->unsignedInteger("order")->default(0);
             $table->timestamp("created_at")->useCurrent();
             $table->timestamp("updated_at")->useCurrent()->useCurrentOnUpdate();
         });

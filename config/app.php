@@ -176,6 +176,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         
         Spatie\Permission\PermissionServiceProvider::class,
+
+        // Firebase service
+        Kreait\Laravel\Firebase\ServiceProvider::class
     ],
 
     /*

@@ -17,11 +17,11 @@ class CreateNotifications extends Migration
             $table->id();
             $table->unsignedBigInteger("sender_id")->index();
             $table->unsignedBigInteger("receiver_id")->index();
-            $table->unsignedBigInteger("post_id")->index();
+            $table->unsignedBigInteger("post_id")->nullable()->index();
             $table->string("title");
             $table->string("content");
             $table->boolean("is_viewed")->default(0);
-            $table->boolean("display")->default(0);
+            $table->boolean("display")->default(1);
             $table->timestamp("created_at")->useCurrent();
             $table->timestamp("updated_at")->useCurrent()->useCurrentOnUpdate();
         });

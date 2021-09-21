@@ -10,13 +10,18 @@
               <div class="card-body">
                 <h1>Login</h1>
                 <p class="text-muted">Sign In to your account</p>
-                <form method="POST" action="{{ route('login') }}">
+                @if(Session::has('errors'))
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> {{session()->get('errors')}}
+                      <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                @endif
+                <form method="POST" action="{{ route('signin') }}">
                     @csrf
                     <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text">
                         <svg class="c-icon">
-                          <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-user"></use>
+                          <use xlink:href="../assets/icons/coreui/free-symbol-defs.svg#cui-user"></use>
                         </svg>
                       </span>
                     </div>
@@ -26,11 +31,11 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text">
                         <svg class="c-icon">
-                          <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-lock-locked"></use>
+                          <use xlink:href="../assets/icons/coreui/free-symbol-defs.svg#cui-lock-locked"></use>
                         </svg>
                       </span>
                     </div>
-                    <input class="form-control" type="password" placeholder="{{ __('Password') }}" name="password" required>
+                    <input class="form-control" type="password" placeholder="{{ __('Password') }}" name="password" value="{{ old('password') }}" required>
                     </div>
                     <div class="row">
                     <div class="col-6">
@@ -38,7 +43,7 @@
                     </div>
                     </form>
                     <div class="col-6 text-right">
-                        <a href="{{ route('password.request') }}" class="btn btn-link px-0">{{ __('Forgot Your Password?') }}</a>
+                        <a href="{{ route('emailResetPasswordPage') }}" class="btn btn-link px-0">{{ __('Forgot Your Password?') }}</a>
                     </div>
                     </div>
               </div>
@@ -48,8 +53,8 @@
                 <div>
                   <h2>Sign up</h2>
                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  @if (Route::has('password.request'))
-                    <a href="{{ route('register') }}" class="btn btn-primary active mt-3">{{ __('Register') }}</a>
+                  @if (Route::has('signupPage'))
+                    <a href="{{ route('signupPage') }}" class="btn btn-primary active mt-3">{{ __('Register') }}</a>
                   @endif
                 </div>
               </div>

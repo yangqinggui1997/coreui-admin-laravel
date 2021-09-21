@@ -28,7 +28,7 @@ class UsersController extends Controller
     {
         $you = auth()->user();
         $users = User::all();
-        return view('dashboard.admin.usersList', compact('users', 'you'));
+        return view('dashboard.admin.index', compact('users', 'you'));
     }
 
     /**
@@ -40,7 +40,7 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('dashboard.admin.userShow', compact( 'user' ));
+        return view('dashboard.admin.form', compact( 'user' ));
     }
 
     /**
@@ -90,4 +90,6 @@ class UsersController extends Controller
         }
         return redirect()->route('users.index');
     }
+
+    
 }

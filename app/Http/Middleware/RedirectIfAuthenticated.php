@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\FirebaseServices;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class RedirectIfAuthenticated
 {
@@ -15,12 +17,20 @@ class RedirectIfAuthenticated
      * @param  string|null  $guard
      * @return mixed
      */
+    
+    protected $except = [
+        // 'user/login',
+        'user/create'
+    ];
+
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            return redirect('/');
-        }
-
+        $token = $request->bearerToken() ? $request->bearerToken() : Session::get('firebaseIdToken');
+        if(!$token)
+            return $next($request);
+        $checkToken = FirebaseServices::verifiedToken($token);
+        if($checkToken->status)
+            return redirect()->route('home');
         return $next($request);
     }
 }

@@ -15,10 +15,16 @@ const mix = require('laravel-mix');
 //mix.sass('resources/sass/app.scss', 'public/css');
 
 //**************** CSS ******************** 
+mix.autoload({
+    jquery: ['$', 'window.$', 'window.jQuery'],
+   });
 //css
 //mix.copy('resources/vendors/pace-progress/css/pace.min.css', 'public/css');
 mix.copy('node_modules/@coreui/chartjs/dist/css/coreui-chartjs.css', 'public/css');
 mix.copy('node_modules/cropperjs/dist/cropper.css', 'public/css');
+mix.copy('node_modules/bootstrap/dist/css/bootstrap.min.css', 'public/css');
+mix.copy('node_modules/bootstrap-multiselect/dist/css/bootstrap-multiselect.min.css', 'public/css');
+
 //main css
 mix.sass('resources/sass/style.scss', 'public/css');
 
@@ -33,6 +39,13 @@ mix.copy('node_modules/chart.js/dist/Chart.min.js', 'public/js');
 mix.copy('node_modules/@coreui/chartjs/dist/js/coreui-chartjs.bundle.js', 'public/js');
 
 mix.copy('node_modules/cropperjs/dist/cropper.js', 'public/js');
+mix.copy('node_modules/jquery/dist/jquery.min.js', 'public/js');
+mix.copy('node_modules/@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter.js', 'public/js');
+mix.copy('node_modules/bootstrap-treeview/dist/bootstrap-treeview.min.js', 'public/js');
+mix.copy('node_modules/bootstrap/dist/js/bootstrap.min.js', 'public/js');
+mix.copy('node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', 'public/js');
+mix.copy('node_modules/bootstrap-multiselect/dist/js/bootstrap-multiselect.min.js', 'public/js');
+
 // details scripts
 mix.copy('resources/js/coreui/main.js', 'public/js');
 mix.copy('resources/js/coreui/colors.js', 'public/js');
