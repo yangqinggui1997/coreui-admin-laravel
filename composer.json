@@ -11,6 +11,7 @@
         "php": "^7.2.5",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
+        "google/cloud": "^0.166.0",
         "google/cloud-core": "^1.42",
         "google/cloud-firestore": "^1.19",
         "guzzlehttp/guzzle": "^7.0.1|^7.3.0",
@@ -19,6 +20,8 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.3.0",
         "laravel/ui": "^3.0",
+        "linecorp/line-bot-sdk": "^7.2",
+        "php-http/curl-client": "^2.2",
         "spatie/laravel-medialibrary": "^8.7.2",
         "spatie/laravel-permission": "^3.17"
     },

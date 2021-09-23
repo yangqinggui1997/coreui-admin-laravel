@@ -1,5 +1,6 @@
 <?php
 
+use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,33 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 */
+Route::get('test', function(){
+    echo "hi there!";
+});
+
+Route::post('readTextImage', function(Request $request){
+    $imageAnnotatorClient = new ImageAnnotatorClient();
+    try
+    {
+        // return response()->json(["data" => $request->hasFile('image')]);
+        $imageContent = file_get_contents($request->file('image'));
+        $response = $imageAnnotatorClient->textDetection($imageContent);
+        if($response->hasError())
+            throw new Error($response->getError());
+        
+    }
+    catch(\Throwable $err)
+    {
+        $imageAnnotatorClient->close();
+        return response()->json(["error" => $err->getMessage()], 422);
+    }
+
+    $imageAnnotatorClient->close();
+
+    return response()->json(["data" => $response->getTextAnnotations()]);
+})->name("readTextImage");
+
+Route::post('lineBotCallback', 'LineBotController@messages')->name("line.message");
 
 Route::prefix('user')->group(function(){
 

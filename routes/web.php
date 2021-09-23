@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// require("api.php");
 
 use App\Models\Category;
 use App\Services\CategoryService;
@@ -163,6 +164,15 @@ use Illuminate\Support\Facades\Session;
 //         });
 //     });
 // });
+
+Route:: get('readTextImage', function(){
+    return view("test");
+});
+
+Route::get('', function(){
+    echo "welcome!";
+});
+
 Route::put('/test', function(Request $request){
     $dataGroupUser = $request->input("groupUser");
 
@@ -210,21 +220,22 @@ Route::get('/test', function(Request $request){
     // $ip = $request->ip();
     // $details = json_decode(file_get_contents("http://ipinfo.io/125.234.76.254/json"));
 
-    $user = UserService::userCollection()->document("5OYS8wC1oQZl7fAmcHp6taNHmuv1");
-    $adminGroupDoc = GroupUserService::getAdminGroup();
-    $usersInGroup = $adminGroupDoc->snapshot()->exists() ? $adminGroupDoc->snapshot()->data()["users"] : [];
+    // $user = UserService::userCollection()->document("5OYS8wC1oQZl7fAmcHp6taNHmuv1");
+    // $adminGroupDoc = GroupUserService::getAdminGroup();
+    // $usersInGroup = $adminGroupDoc->snapshot()->exists() ? $adminGroupDoc->snapshot()->data()["users"] : [];
     
-    array_push($usersInGroup, $user);
+    // array_push($usersInGroup, $user);
 
-    UserService::transaction(function($transaction) use($user, $adminGroupDoc) {
-        $transaction->update($adminGroupDoc, [
-            [
-                "path" => "users",
-                "value" => FieldValue::arrayUnion([$user])
-            ]
-        ]);
-    });
+    // UserService::transaction(function($transaction) use($user, $adminGroupDoc) {
+    //     $transaction->update($adminGroupDoc, [
+    //         [
+    //             "path" => "users",
+    //             "value" => FieldValue::arrayUnion([$user])
+    //         ]
+    //     ]);
+    // });
     echo "<pre>";
+    var_dump(true);
     // var_dump(GroupUserService::getGroupUser());
     // foreach($doc as $d){
         // var_dump(FieldValue::arrayUnion([$user]));
