@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use LINE\LINEBot as LINELINEBot;
+use LINE\LINEBot\Constant\HTTPHeader;
+use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use LINE\LINEBot\Exception\InvalidEventRequestException;
+use LINE\LINEBot\Exception\InvalidSignatureException;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
-use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
-use LINE\LINEBot\SignatureValidator;
+use LINE\LINEBot\MessageBuilder\Text\EmojiBuilder;
+use LINE\LINEBot\MessageBuilder\Text\EmojiTextBuilder;
 
 class LineBotController extends Controller
 {
@@ -19,37 +24,43 @@ class LineBotController extends Controller
 
     public function messages()
     {
-        // get request body and line signature header
-        $body 	   = file_get_contents('php://input');
-        $signature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
+        $httpClient = new CurlHTTPClient(env('LINE_BOT_CHANNEL_ACCESS_TOKEN'));
+        $bot = new LINELINEBot($httpClient, ['channelSecret' => env('LINE_BOT_CHANNEL_SECRET')]);
 
-        // log body and signature
-        file_put_contents('php://stderr', 'Body: '.$body);
-
-        // is LINE_SIGNATURE exists in request header?
+        $signature = $this->request->header(HTTPHeader::LINE_SIGNATURE);
         if (empty($signature))
-            return response()->json(["error" => "Signature not set"], 400);
+            Log::error("Bad request");
 
-        // is this request comes from LINE?
-        if(!$_ENV['PASS_SIGNATURE'] && ! SignatureValidator::validateSignature($body, $_ENV['LINE_BOT_CHANNEL_SECRET'], $signature))
-            return response()->json(["error" => "Invalid signature"], 400);
-
-        // init bot
-        $httpClient = new CurlHTTPClient($_ENV['LINE_BOT_CHANNEL_ACCESS_TOKEN']);
-        $bot = new LINELINEBot($httpClient, ['channelSecret' => $_ENV['LINE_BOT_CHANNEL_SECRET']]);
-        $data = json_decode($body, true);
-        
-        foreach ($data['events'] as $event)
+        // Check request with signature and parse request
+        try 
         {
-            $userMessage = $event['message']['text'];
-            if(strtolower($userMessage) == 'halo')
+            $events = $bot->parseEventRequest(file_get_contents("php://input"), str_replace("\\", "", $signature));
+            Log::info("EVENTS: ".$events);
+        } 
+        catch (InvalidSignatureException $e) 
+        {
+            Log::error($e->getMessage());
+        } 
+        catch (InvalidEventRequestException $e) 
+        {
+            Log::error($e->getMessage());
+        }
+
+        foreach ($events as $event) {
+            Log::info("Message instance: ");
+            Log::info(print_r($event, true));
+            switch(true)
             {
-                $message = "Halo juga";
-                $textMessageBuilder = new TextMessageBuilder($message);
-                $result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
-                return $result->getHTTPStatus() . ' ' . $result->getRawBody();
-            
+                case $event instanceof TextMessage:
+                    $replyText = new EmojiTextBuilder("$ LINE emoji $", new EmojiBuilder(0, "5ac1bfd5040ab15980c9b435", "001"), new EmojiBuilder(13, "5ac1bfd5040ab15980c9b435", "002"));
+                    Log::info("Reply text: ");
+                    $resp = $bot->replyText($event->getReplyToken(), $replyText, "hi there");
+                    break;
+                default: 
+                    Log::error('Non text message has come');
+                    break;
             }
+            Log::info($resp->getHTTPStatus() . ': ' . $resp->getRawBody());
         }
     }
 }

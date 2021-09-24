@@ -31,6 +31,10 @@ use App\Services\GroupUserService;
 use App\Services\PostService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Session;
+use LINE\LINEBot\Constant\HTTPHeader;
+use LINE\LINEBot\MessageBuilder\Text\EmojiBuilder;
+use LINE\LINEBot\MessageBuilder\Text\EmojiTextBuilder;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 // Route::group(['middleware' => ['get.menu']], function () {
 //     Route::get('/', function () {           return view('dashboard.homepage'); });
@@ -206,16 +210,29 @@ Route::put('/test', function(Request $request){
 });
 
 Route::post('/test', function(Request $request){
-    $data = [
-        "groupUser" => $request->input("groupUser")
-    ];
 
-    echo "<pre>";
-    var_dump($data);
-    echo "</prev>";
 });
 
+function a($c, $b = 1)
+{
+    $args = func_get_args();
+    $atract = array_slice($args, 1);
+    return $atract;
+}
 Route::get('/test', function(Request $request){
+    $buildEmoji = new EmojiTextBuilder("$ LINE emoji $", new EmojiBuilder(0, "5ac1bfd5040ab15980c9b435", "001"),
+    new EmojiBuilder(13, "5ac1bfd5040ab15980c9b435", "002"));
+
+    // $arr = [
+    //     new EmojiBuilder(0, "5ac1bfd5040ab15980c9b435", "001"),
+    //     new EmojiBuilder(13, "5ac1bfd5040ab15980c9b435", "002")
+    // ];
+    // $new = array_map(function ($emoji) {
+    //     return $emoji->build();
+    // }, $arr);
+
+    // $result = $buildEmoji->build();
+    // $onfleetSignature = $_SERVER['X-Onfleet-Signature'];    
     // $data = UserService::getUserById("0dOlCCgTEfViKMF8QFMZZkNeQ4H3");
     // $ip = $request->ip();
     // $details = json_decode(file_get_contents("http://ipinfo.io/125.234.76.254/json"));
@@ -234,12 +251,16 @@ Route::get('/test', function(Request $request){
     //         ]
     //     ]);
     // });
+    $builTextMessage = new TextMessageBuilder($buildEmoji);
+
     echo "<pre>";
-    var_dump(true);
+    var_dump($builTextMessage);
+
+    // var_dump(true);
     // var_dump(GroupUserService::getGroupUser());
     // foreach($doc as $d){
         // var_dump(FieldValue::arrayUnion([$user]));
-        // echo "<br>";
+        echo "<br>";
     // }
 // GroupUserService::fbIndex();
 // var_dump(UserService::getUserById("XGzw9uFZ9pU3Ip5aXaXjEUkhW4A2"));

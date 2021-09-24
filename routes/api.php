@@ -48,6 +48,7 @@ Route::post('readTextImage', function(Request $request){
 
 Route::post('lineBotCallback', 'LineBotController@messages')->name("line.message");
 
+
 Route::prefix('user')->group(function(){
 
     Route::get('reset_password', 'admin\\UserController@resetPassword')->name('resetPassword');
