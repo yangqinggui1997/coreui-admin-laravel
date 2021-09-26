@@ -48,6 +48,16 @@ class UserService extends FirebaseServices
         }
     }
 
+    public static function checkUserExistsByLineId($lineId)
+    {
+        $query = (new self)->_userCollection->where("lineId", "=", $lineId);
+        $querySanpshot = $query->documents();
+
+        if($querySanpshot->isEmpty()) return false;
+        
+        return true;
+    }
+
     public static function getUserByEmail($email)
     {
         try 

@@ -220,8 +220,7 @@ function a($c, $b = 1)
     return $atract;
 }
 Route::get('/test', function(Request $request){
-    $buildEmoji = new EmojiTextBuilder("$ LINE emoji $", new EmojiBuilder(0, "5ac1bfd5040ab15980c9b435", "001"),
-    new EmojiBuilder(13, "5ac1bfd5040ab15980c9b435", "002"));
+    
 
     // $arr = [
     //     new EmojiBuilder(0, "5ac1bfd5040ab15980c9b435", "001"),
@@ -251,11 +250,12 @@ Route::get('/test', function(Request $request){
     //         ]
     //     ]);
     // });
-    $builTextMessage = new TextMessageBuilder($buildEmoji);
+
+    $str = "dadadadada";
+
 
     echo "<pre>";
-    var_dump($builTextMessage);
-
+var_dump(strpos($str, "\\"));
     // var_dump(true);
     // var_dump(GroupUserService::getGroupUser());
     // foreach($doc as $d){
@@ -400,6 +400,10 @@ Route::group(['middleware' => 'AuthMiddleware'], function(){
         Route::delete('', 'PostController@fbDelete')->name('post.delete');
     });
 });
+
+//User register via chat bot
+Route::get("/register", ["uses" => "UserController@register"])->name("user.register");
+Route::post("/register", "UserController@proccessRegitser")->name("user.processRegister");
 
 //Upload file
 Route::post('uploadCKeditor', 'UploadCotroller@uploadCKeditor')->middleware('AuthMiddleware')->name('uploadCKeditor');

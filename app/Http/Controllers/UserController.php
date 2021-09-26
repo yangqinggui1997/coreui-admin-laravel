@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendMailJob;
+use App\Jobs\SendPushLineMessageJob;
 use App\Services\GroupUserService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -234,5 +235,56 @@ class UserController extends Controller
         if(!$result->status) return back()->withErrors($result->errorMessage);
         Queue::push((new SendMailJob($result->data["email"], null, 'remove-account')));
         return $this->index();
+    }
+
+    public function register()
+    {
+        return view("auth.register")->with(array_key_exists("lineId", $this->request->all()) ? ["lineId" => $this->request->input("lineId")] : []);
+    }
+
+    public function proccessRegitser()
+    {
+        $allRequestData = $this->request->all();
+        $validator = Validator::make($allRequestData, [
+            "name" => "required",
+            "phone" => "required",
+            "email" => "nullable|email",
+            "carPlate" => "required",
+            "lineId" => "required"
+        ]);
+
+        if($validator->fails())
+            return back()->withInput()->withErrors($validator->getMessageBag());
+
+        $password = Str::random();
+
+        $data = [
+            "dislayName" => $this->request->input("name"),
+            "phoneNumber" => $this->request->input("phone"),
+            "password" => $password,
+            "email" => array_key_exists('email', $allRequestData) ? $this->request->input("email") : $this->request->input("lineId").".".$this->request->input("phone")."@gmail.com"
+        ];
+
+        $claims = [
+            "carPlate" => $this->request->input("carPlate"),
+            "lineId" => $this->request->input("lineId"),
+            "chatbotVerified" => false,
+            "emailVerifiedAt" => NULL,
+            "role" => "user",
+            "groupId" => NULL,
+            "status" => true
+        ];
+
+        $result = UserService::createUser($data, $claims);
+
+        if($result->status)
+        {
+            array_key_exists('email', $allRequestData) && Queue::push((new SendMailJob(array_key_exists('email', $allRequestData) ? $this->request->input("email") : env("MAIL_FROM_ADDRESS"), ["email" => $this->request->input("email"), "password" => $password], 'create-account')));
+
+            Queue::push((new SendPushLineMessageJob($this->request->input("lineId"))));
+
+            return back()->withInput()->with(["success" => "Congratulations!, your account created successfully."]);
+        } 
+        return back()->withErrors($result->errorMessage)->withInput();
     }
 }

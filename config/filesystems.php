@@ -54,11 +54,16 @@ return [
             'url' => env('APP_URL').'/public',
             'visibility' => 'public',
         ],
-
+        'app' => [
+            'driver' => 'local',
+            'root' => base_path('app/Services'),
+            'url' => env('APP_URL').'/app/Services',
+            'visibility' => 'public',
+        ],
         'uploads' => [
             'driver' => 'local',
             'root' => public_path('uploads'),
-            'url' => env('APP_URL').'uploads',
+            'url' => env('APP_URL').'/uploads',
             'visibility' => 'public',
         ],
 

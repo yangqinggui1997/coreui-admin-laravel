@@ -1,0 +1,75 @@
+/* --> Generic hierarcy checkbox fields*/
+
+.hierarchy-checkboxes{
+    float: left;
+    width: 200px;
+    border: 1px solid transparent;
+}
+input.hierarchy-root-checkbox[type=checkbox]{
+    float: left;
+    margin: 6px 5px 0 5px;
+}
+label.hierarchy-root-label{
+    font-weight: normal;
+    padding: 3px;
+    margin: 0;
+}
+label.hierarchy-root-label:hover,
+.hierarchy-root-child .hierarchy-label:hover{
+    background: #eee;
+}
+.hierarchy-checkboxes.child-expanded{
+    border: 1px solid #ccc;
+    border-bottom: none;
+}
+.hierarchy-root-child{
+    position: absolute;
+    display: none;
+    border: 1px solid #ccc;
+    width: 200px;
+    z-index: 55;
+    background: #fff;
+    border-top: none;
+}
+.hierarchy-root-child .hierarchy-node{
+    clear: both;
+    display: block;
+    padding-left: 8px;
+    background: url("dashed-line-vertical.gif") repeat-y scroll left top rgba(0, 0, 0, 0);
+    margin-left: 9px;
+  
+}
+.hierarchy-root-child .hierarchy-label{
+    background: url("dashed-line-horizontal.gif") no-repeat scroll 13px 12px rgba(0, 0, 0, 0);
+    margin: 0 0 0 -20px;
+    font-weight: normal;
+    padding-top: 5px;
+    display:block;
+}
+
+.hierarchy-checkboxes .expand-collapse-button,
+.hierarchy-root-child .hierarchy-node .expand-collapse-button{
+  display:block;
+  content:" ";
+  float:left;
+  background: url("expand.png") no-repeat scroll 0 4px transparent;
+  width:16px;
+  height:16px;
+  margin-top: 1px;
+}
+.hierarchy-checkboxes.child-expanded .expand-collapse-button,
+.hierarchy-root-child .hierarchy-node.child-expanded >.expand-collapse-button{
+  background: url("collapse.png") no-repeat scroll 0 4px transparent;
+}
+.hierarchy-root-child .hierarchy-node.leaf .expand-collapse-button{
+  background:none;
+  width:6px;
+}
+.hierarchy-root-child input[type=checkbox]{
+    float: left;
+    margin: 3px;
+    margin-top: 8px;
+}
+
+
+/* <-- Generic hierarcy checkbox fields*/
