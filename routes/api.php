@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 */
-Route::get('test', function(){
+Route::post('test', function(){
     echo "hi there!";
 });
 
@@ -46,8 +46,7 @@ Route::post('readTextImage', function(Request $request){
     return response()->json(["data" => $response->getTextAnnotations()]);
 })->name("readTextImage");
 
-Route::post('lineBotCallback', 'LineBotController@messages')->name("line.message");
-
+Route::post('callback', 'LineBotController@messages')->name("line.message");
 
 Route::prefix('user')->group(function(){
 

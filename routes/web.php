@@ -209,16 +209,9 @@ Route::put('/test', function(Request $request){
     echo "</prev>";
 });
 
-Route::post('/test', function(Request $request){
 
-});
+Route::post('/test', 'LineBotController@messages');
 
-function a($c, $b = 1)
-{
-    $args = func_get_args();
-    $atract = array_slice($args, 1);
-    return $atract;
-}
 Route::get('/test', function(Request $request){
     
 

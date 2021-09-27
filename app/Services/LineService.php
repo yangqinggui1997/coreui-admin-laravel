@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use LINE\Laravel\Facade\LINEBot;
+use LINE\LINEBot;
 use LINE\LINEBot\Constant\Flex\ComponentLayout;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\BoxComponentBuilder;
@@ -80,5 +80,10 @@ class LineService
 		$flexMessageBuider->setContents($bubbleContainerBuilder);
 
 		$resp = (new self)->bot->replyMessage($replyToken, $flexMessageBuider, "hi there");
+	}
+
+	public static function replyText($replyToken, $text)
+	{
+		(new self)->bot->replyText($replyToken, $text);
 	}
 }
