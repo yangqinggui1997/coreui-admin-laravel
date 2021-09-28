@@ -213,7 +213,7 @@ Route::put('/test', function(Request $request){
 Route::post('/test', 'LineBotController@messages');
 
 Route::get('/test', function(Request $request){
-    
+    echo env("BROADCAST_DRIVER");
 
     // $arr = [
     //     new EmojiBuilder(0, "5ac1bfd5040ab15980c9b435", "001"),

@@ -25,12 +25,14 @@ class LineBotController extends Controller
         $signature = $this->request->header(HTTPHeader::LINE_SIGNATURE);
         if (empty($signature))
             Log::error("Bad request");
+
         Log::info("SIGNATURE: ". $signature);
+        Log::info("CONTENT: ".file_get_contents("php://input"));
+
         // Check request with signature and parse request
         try 
         {
             $events = LineService::getEvents(file_get_contents("php://input"), str_replace("\\", "", $signature));
-        
             Log::info("EVENTS: ".print_r($events, true));
 
             foreach ($events as $event) 
@@ -43,7 +45,7 @@ class LineBotController extends Controller
                 {
                     case $event instanceof TextMessage:
                         LineService::replyText($event->getReplyToken(), "hello");
-                        // // !UserService::checkUserExistsByLineId($event->getUserId()) && LineService::replyRequireRegister($event->getReplyToken());
+                        // !UserService::checkUserExistsByLineId($event->getUserId()) && LineService::replyRequireRegister($event->getReplyToken());
                         break;
                     default: 
                         Log::error('None text message has come.');
@@ -56,6 +58,10 @@ class LineBotController extends Controller
             Log::error($e->getMessage());
         } 
         catch (InvalidEventRequestException $e) 
+        {
+            Log::error($e->getMessage());
+        }
+        catch(\Throwable $e)
         {
             Log::error($e->getMessage());
         }
